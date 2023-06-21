@@ -1,8 +1,4 @@
 
-type NoneOr<T> = T | undefined
-
-export type PossiblyNumber = NoneOr<number>
-
 let midiMessageIndex = 0
 
 export enum MESSAGE_TYPE {

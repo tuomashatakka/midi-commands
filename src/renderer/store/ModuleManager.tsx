@@ -1,7 +1,5 @@
 import type Module from "./Module"
 
-type Nullable<T> = T | null
-
 export default class ModuleManager {
   registeredRenderers = new WeakMap()
 

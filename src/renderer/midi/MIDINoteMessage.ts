@@ -1,29 +1,27 @@
-import AbstractBaseMIDIMessage, { PossiblyNumber } from "./AbstractBaseMIDIMessage"
+import AbstractBaseMIDIMessage from "./AbstractBaseMIDIMessage"
+import NOTE_FREQUENCIES from './notes.json'
 
+export const BASE_TUNING = 440
 export const NOTE_NAMES = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ]
 
-export const getNoteNameByMidiMessageValue = (numericValue: number) => {
-  const index = numericValue % 12
-
-  return NOTE_NAMES[index]
-}
+export const getNoteNameByMidiMessageValue = (numericValue: number): string =>
+  NOTE_NAMES[numericValue % 12]
 
 export const getNoteOctaveByMidiMessageValue = (numericValue: number): number =>
   Math.floor(numericValue/12)
 
-const MIDI_NOTES: Record<number, number> = {
-  63:  440,
-  127: 18000,
-}
+export const getNoteFrequency = (noteNumber: number): number =>
+  NOTE_FREQUENCIES[noteNumber]
+  // 2**((noteNumber - 69)/12) * BASE_TUNING
 
-// eslint-disable-next-line import/prefer-default-export
+
 export default class MIDINoteMessage extends AbstractBaseMIDIMessage {
 
-  get frequency (): PossiblyNumber {
-    return MIDI_NOTES[this.key]
+  get frequency () {
+    return getNoteFrequency(this.key)
   }
 
-  get value (): PossiblyNumber {
+  get value () {
     if (this.type === AbstractBaseMIDIMessage.TYPES.NOTE_OFF)
       return undefined
     return this.data.at(2)
